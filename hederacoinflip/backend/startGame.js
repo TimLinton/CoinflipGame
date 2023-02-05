@@ -1,29 +1,27 @@
 const {
   setGamePhase,
-  setPlayerGuess,
+  flipCoin,
+  runRandomNumber,
+  placeBet,
+  sendAllUserData,
+  setplayerAddress,
   setBetAmount,
+  setPlayerGuess,
   setGameWonByPlayer,
   setActualResult,
   setWalletConnected,
-  setReceipt,
-  placeBet,
-  checkWallet,
-  flipCoin,
-  runRandomNumber,
-  setPlayerId,
   payOut,
-} = "./contract";
+} = require("./gameServer/HbarCoinflip.js");
 
 const startGame = async (_playerChoice, _betAmount) => {
   setGamePhase("Started");
 
+  //get the player's account ID and encrypted access token
+  const { accountId, encryptedAccessToken } = await setWalletConnected();
+  setplayerAddress(accountId);
+  setWalletConnected(true, encryptedAccessToken);
+
   // Ensure that the wallet is connected and the user has an account ID and access token
-  const walletInfo = await checkWallet();
-  if (!walletInfo) {
-    console.error("Please connect to a wallet before playing the game.");
-    return;
-  }
-  setWalletConnected(walletInfo.isConnected, walletInfo.token);
 
   // Get the user's account ID and encrypted access token
   // Check that the player has provided a valid choice (heads or tails)
@@ -54,6 +52,7 @@ const startGame = async (_playerChoice, _betAmount) => {
 
   try {
     coinFlipResult = await flipCoin();
+    setActualResult(coinFlipResult);
   } catch (error) {
     console.error(error);
   }
@@ -70,7 +69,7 @@ const startGame = async (_playerChoice, _betAmount) => {
 
   // Pay out to the player or the contract based on the outcome of the game
   payOut();
-  // recordUserData();
+  sendAllUserData();
 };
 
 module.exports = { startGame };

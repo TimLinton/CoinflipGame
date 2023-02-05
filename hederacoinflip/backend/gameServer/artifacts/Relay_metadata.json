@@ -1,0 +1,399 @@
+{
+	"compiler": {
+		"version": "0.8.6+commit.11564f7e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "permissions",
+				"outputs": [
+					{
+						"internalType": "contract Permissions",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "playerStats",
+				"outputs": [
+					{
+						"internalType": "contract PlayerStats",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_playerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_gameWonByPlayer",
+						"type": "bool"
+					},
+					{
+						"internalType": "string",
+						"name": "_playerGuess",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_actualResult",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_betAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_gamesPlayed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_accessToken",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalGamesPlayed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalHbarWagered",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalHbarWon",
+						"type": "uint256"
+					}
+				],
+				"name": "relayAllData",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_gameId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "_actualResult",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalGamesPlayed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalHbarWagered",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_totalHbarWon",
+						"type": "uint256"
+					}
+				],
+				"name": "relayGameData",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_playerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_gameWonByPlayer",
+						"type": "bool"
+					},
+					{
+						"internalType": "string",
+						"name": "_playerGuess",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_actualResult",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_betAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_gamesPlayed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_accessToken",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bool",
+						"name": "_isGameActive",
+						"type": "bool"
+					}
+				],
+				"name": "relayPlayerData",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "playerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "requestPlayerWithdrawal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_treasury",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_permissions",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_playerStats",
+						"type": "address"
+					}
+				],
+				"name": "setContracts",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "treasury",
+				"outputs": [
+					{
+						"internalType": "contract Treasury",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"relayAllData(address,bool,string,string,uint256,uint256,bytes32,uint256,uint256,uint256)": {
+					"params": {
+						"_accessToken": "player's access token, may be uneeded and removed before release",
+						"_actualResult": "the actual outcome of the game",
+						"_betAmount": "amount bet by the player",
+						"_gameWonByPlayer": "flag indicating if the game was won by the player",
+						"_gamesPlayed": "number of games played by the player total",
+						"_playerAddress": "address of the player",
+						"_playerGuess": "the player's guess in the game",
+						"_totalGamesPlayed": "total number of games played by the player",
+						"_totalHbarWagered": "total amount of hbar wagered by the player",
+						"_totalHbarWon": "total amount of hbar won by the player"
+					}
+				},
+				"relayGameData(uint256,string,uint256,uint256,uint256)": {
+					"params": {
+						"_actualResult": "the actual outcome of the game",
+						"_gameId": "the game ID",
+						"_totalGamesPlayed": "total number of games played",
+						"_totalHbarWagered": "total amount of Hbar wagered in the game",
+						"_totalHbarWon": "total amount of Hbar won in the game"
+					}
+				},
+				"relayPlayerData(address,bool,string,string,uint256,uint256,bytes32,bool)": {
+					"params": {
+						"_accessToken": "player's access token, may be uneeded and removed before release",
+						"_actualResult": "the actual outcome of the game",
+						"_betAmount": "amount bet by the player",
+						"_gameWonByPlayer": "flag indicating if the game was won by the player",
+						"_gamesPlayed": "number of games played by the player total",
+						"_isGameActive": "flag indicating if the game is active",
+						"_playerAddress": "address of the player",
+						"_playerGuess": "the player's guess in the game"
+					}
+				},
+				"requestPlayerWithdrawal(address,uint256)": {
+					"params": {
+						"amount": "amount of funds to withdraw",
+						"playerAddress": "address of the player making the request"
+					}
+				},
+				"setContracts(address,address,address)": {
+					"params": {
+						"_permissions": "address of the permissions contract",
+						"_playerStats": "address of the playerStats contract",
+						"_treasury": "address of the treasury contract"
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"relayAllData(address,bool,string,string,uint256,uint256,bytes32,uint256,uint256,uint256)": {
+					"notice": "Record player and game data to the PlayerStats contract"
+				},
+				"relayGameData(uint256,string,uint256,uint256,uint256)": {
+					"notice": "Record game data to the PlayerStats contract"
+				},
+				"relayPlayerData(address,bool,string,string,uint256,uint256,bytes32,bool)": {
+					"notice": "Record player data to the PlayerStats contract"
+				},
+				"requestPlayerWithdrawal(address,uint256)": {
+					"notice": "Request a player withdrawal from the Treasury"
+				},
+				"setContracts(address,address,address)": {
+					"notice": "get the contract ID codes for treasury, permissions and playerstats"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"hederacoinflip/backend/gameServer/Relay.sol": "Relay"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"hederacoinflip/backend/gameServer/Permissions.sol": {
+			"keccak256": "0x255625cca82bcbc7812146a475bae168d7a7185f13bddc3edc54d58cfc64cb8c",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://c161a2bf3dbbe42cddf9825f4172eaa4abe7b4c04a9f0adcdc6a054bb600f4c2",
+				"dweb:/ipfs/QmVgrkB4BPKpgns6UrfwqbXXZ575h5LqRxQuj8mjLbn5ZB"
+			]
+		},
+		"hederacoinflip/backend/gameServer/PlayerStats.sol": {
+			"keccak256": "0x072012ce5a7172769556982a9cbfb382b66d0dae7f54b36ffbff1b582595b756",
+			"license": "UNLICENSED",
+			"urls": [
+				"bzz-raw://42214246dbf947e3ea09c53eb9fa34b1c25a7e5623c9db0648659dee6e7bef26",
+				"dweb:/ipfs/QmeVF7A4z53FLxPWZ8ovSb4FA7hdv1s42UTU7ZDXAxwCqh"
+			]
+		},
+		"hederacoinflip/backend/gameServer/Relay.sol": {
+			"keccak256": "0x438e561516f0d215c99b7a7245d41fc65f5e72849b21daa12730f14efa4bd3e0",
+			"license": "Unlicensed",
+			"urls": [
+				"bzz-raw://4db02d0a1937177fa6b4d5e953bb7beb1cc5729194a7a786a651ecd5cea84fd7",
+				"dweb:/ipfs/QmaxUgzoQ6aFPxnSvzbdNXiGCvfs6mm5PFhNaN8qZu5voy"
+			]
+		},
+		"hederacoinflip/backend/gameServer/Treasury.sol": {
+			"keccak256": "0x930be862f5e41422a7ef379e6e21a4f032cc7679f3ef88e9b42903b70fa4e33c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://07ae51a1cb9230b22b27da575749bcc7dadc53064dd8626d2f87d06ee7baccba",
+				"dweb:/ipfs/QmcyJxSvhnZC7KfVJDez3zoqeA33cXTktQFNZAAndyexJd"
+			]
+		},
+		"hederacoinflip/backend/gameServer/helpers/ExpiryHelper.sol": {
+			"keccak256": "0x905bce7992ce599e2cfc105f2b2f11b1038ee452b9e484a7be6605f45af9f94a",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://d395ab56d092b83ee0482b5f46cbc9c2b16077a0a5b5490815801be0c232c67a",
+				"dweb:/ipfs/QmRD8b5M9x8AmpxCtbEqoR8PhTB1mUqXWBvRbimQ5M9czF"
+			]
+		},
+		"hederacoinflip/backend/gameServer/helpers/HederaResponseCodes.sol": {
+			"keccak256": "0x85734572347c25f45480488ad4fdb63ed749a794daac839540f5b0eb7dbb22e6",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://addc4c8c31e1b3fd001986599856bb39e9cb4532a922155f699aae1686563e63",
+				"dweb:/ipfs/QmXJES7o4xoSowiDo3qm3Mr3LaWm7g5qTQosw5EAAiz9R5"
+			]
+		},
+		"hederacoinflip/backend/gameServer/helpers/HederaTokenService.sol": {
+			"keccak256": "0xfd694ae4772a8cd850beed2bb2f9085c886547418c6ddf5efc62f6a402262b87",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://119935f91b9333b431ecd937b72980adcf5cd90fef7b2c9eb485b0d3b4b5e956",
+				"dweb:/ipfs/QmaEAfLBGdZAo8MoTaPDvXDthcCRSpBZRoAk19bmV4SM83"
+			]
+		},
+		"hederacoinflip/backend/gameServer/helpers/IHederaTokenService.sol": {
+			"keccak256": "0xfdb882a4883cca98de0904d3a74405c210c891d7dab3666f635b3917988781e2",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://bcdb3f8e6c966d249922e69246fe93dcbc9a89f858f747f3814a696aa3ca2e55",
+				"dweb:/ipfs/QmYMYDS8cawToJBzjepLN7MLmoL49rxrhJTmiWMRKEQTYZ"
+			]
+		},
+		"hederacoinflip/backend/gameServer/helpers/KeyHelper.sol": {
+			"keccak256": "0xf3a6185aacf2e4964df0a4ad35f4190abe75fb7ed8e6846459513df86a08389a",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://8700852d1b95bb75bb4f2dd0b8eeb97829d7baa5c3440db874c09d043d2f7a89",
+				"dweb:/ipfs/QmP7JneGLR9QHFsGZmDmqUWQDQ6TjWcQWZnbjuxLYzx6dB"
+			]
+		}
+	},
+	"version": 1
+}

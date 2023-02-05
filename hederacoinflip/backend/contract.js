@@ -1,5 +1,3 @@
-// const coinflip = require("./coinflip");
-
 const {
   Client,
   PrngTransaction,
@@ -10,15 +8,41 @@ const {
   ContractCreateFlow,
   AccountId,
   ContractCreateTransaction,
-  // FileCreateTransaction,
+  FileCreateTransaction,
+  FileId,
+  ContractFunctionParameters,
   ContractExecuteTransaction,
-} = "@hashgraph/sdk";
+  ContractCallQuery,
+  ContractId,
+} = require("@hashgraph/sdk");
 
-const Dotenv = require("dotenv");
-Dotenv.config();
+const fs = require("fs");
+
+const fetch = require("node-fetch");
+
+const dotenv = require("dotenv");
+
+const result = dotenv.config({
+  path: "/home/goodchoice/Documents/Website2/hederacoinflip/backend/.env",
+});
+
+if (result.error) {
+  throw result.error;
+}
+
+console.log(result.parsed);
+
+// const defineAcc = process.env.OPERATOR_ID;
+// const defineKey = process.env.OPERATOR_KEY;
+
 const operatorAcc = AccountId.fromString(process.env.OPERATOR_ID);
 const operatorKey = PrivateKey.fromString(process.env.OPERATOR_KEY);
-const bytecode = process.env.BYTECODE;
+
+//bytecode in /home/goodchoice/Documents/Website2/hederacoinflip/backend/coinflip_sol_CoinFlip.bin
+const byteString = fs.readFileSync(
+  "/home/goodchoice/Documents/Website2/hederacoinflip/backend/coinflip_sol_CoinFlip.bin"
+);
+
 const client = Client.forTestnet();
 client.setOperator(operatorAcc, operatorKey);
 // const mainTestNetAcc = process.env.MY_TEST_ACCOUNT_ID;
@@ -26,39 +50,36 @@ client.setOperator(operatorAcc, operatorKey);
 let playerId;
 let walletAccessToken;
 
-const playerAcc = process.env.PLAYER_ID;
-const playerKey = process.env.PLAYER_PRIVATE_KEY;
+// const playerAcc = process.env.PLAYER_ID;
+// const playerKey = process.env.PLAYER_PRIVATE_KEY;
 
 // const treasuryAcc = process.env.TREASURY_ID;
 // const treasuryKey = process.env.TREASURY_PRIVATE_KEY;
+async function main() {
+  //Create the transaction
+  const gameContract = new ContractCreateFlow()
+    .setGas(1000000)
+    .setBytecode(byteString);
 
-//check to make sure the wallet is connected, the wallet has an acount ID, and the wallet has a token
-//return the wallet token if all conditions are met so they can play the game
+  //Sign the transaction with the client operator key and submit to a Hedera network
+  const txResponse = await gameContract.execute(client);
 
-//Grab the account ID and private key of the operator account from the .env file
+  //Get the receipt of the transaction
+  const receipt = await txResponse.getReceipt(client);
 
-//Set the operator with the operator ID and operator key
+  //Get the new contract ID
+  const contractId = await receipt.contractId;
+  // const contractAddress = contractId.toSolidityAddress();
 
-export const checkWallet = () => {
-  try {
-    if (!window.hashconnect) {
-      throw new Error("Cannot connect to wallet");
-    }
-    if (!window.hashconnect.walletMetadata) {
-      throw new Error("Error accessing wallet metadata");
-    }
-    if (!window.hashconnect.walletMetadata.accountIds) {
-      throw new Error("Error accessing account IDs");
-    }
-    playerId = window.hashconnect.walletMetadata.accountIds[0];
-    walletAccessToken = window.hashconnect.walletMetadata.accessToken;
-    setWalletConnected(true, walletAccessToken);
-    setPlayerId(playerId);
-  } catch (error) {
-    console.error("Error accessing wallet: ", error.message);
-    return error;
-  }
-};
+  console.log("The new contract ID is " + contractId);
+  setContractId(contractId);
+  // console.log("The new contract address is " + contractAddress);
+
+  //check to make sure the wallet is connected, the wallet has an acount ID, and the wallet has a token'/;
+  //return the wallet token if all conditions are met so they can play the game
+}
+
+main();
 
 ////////////////////
 ///App State Functions
@@ -76,8 +97,9 @@ const appState = {
   actualResult: "",
   walletConnected: false,
   transferReceipt: "",
+  contractIdentity: "",
 };
-export const setGamePhase = (_nextPhase) => {
+const setGamePhase = (_nextPhase) => {
   let currentPhaseIndex = appState.gamePhase.indexOf(appState.currentPhase);
   let nextPhaseIndex = appState.gamePhase.indexOf(_nextPhase);
   if (nextPhaseIndex > -1 && nextPhaseIndex > currentPhaseIndex) {
@@ -85,11 +107,18 @@ export const setGamePhase = (_nextPhase) => {
   }
 };
 
-export const setGameWonByPlayer = async (_isWon) => {
+const setContractId = async (_id) => {
+  appState.contractIdentity = _id;
+};
+
+const setGameWonByPlayer = async (_isWon) => {
   appState.gameWonByPlayer = _isWon;
 };
-export const setActualResult = async (_result) => {
+const setActualResult = async (_result) => {
   appState.actualResult = _result;
+};
+const contractIdentity = async () => {
+  return appState.contractIdentity;
 };
 
 ////////////////////
@@ -104,6 +133,11 @@ const trackPlayer = {
   transferReceipt: "",
 };
 
+playerId = window.hashconnect.walletMetadata.accountIds[0];
+// walletAccessToken = window.hashconnect.walletMetadata.accessToken;
+// setWalletConnected(true, walletAccessToken);
+// setPlayerId(playerId);
+
 const setPlayerId = async (id) => {
   //must be an hbar address 0.0.123456
   if (!id.match(/^[0-9]+\.[0-9]+\.[0-9]+$/)) {
@@ -112,26 +146,32 @@ const setPlayerId = async (id) => {
   trackPlayer.playerId = id;
 };
 
-export const setPlayerGuess = async (_guess) => {
+const setPlayerGuess = async (_guess) => {
   trackPlayer.playerGuess = _guess;
 };
 
-export const setWalletConnected = (_isConnected, _token) => {
-  if (typeof isConnected !== "boolean") {
+const setWalletConnected = (_isConnected, _token) => {
+  if (typeof _isConnected !== Boolean) {
     throw new Error("Invalid input. Only a boolean value is allowed.");
   }
   appState.walletConnected = _isConnected;
   trackPlayer.walletConnected = _isConnected;
   trackPlayer.walletAccessToken = _token;
+  playerId = window.hashconnect.walletMetadata.accountIds[0];
+  walletAccessToken = window.hashconnect.walletMetadata.accessToken;
 };
 
-export const setReceipt = async (_receipt) => {
+const setReceipt = async (_receipt) => {
   appState.transferReceipt = _receipt;
   trackPlayer.transferReceipt = _receipt;
 };
 
-export const getWalletToken = () => {
+const getWalletToken = () => {
   return trackPlayer.walletAccessToken;
+};
+
+const setBetAmount = async (amount) => {
+  appState.betAmouont = amount;
 };
 
 ////////////////
@@ -143,7 +183,7 @@ const globalErrorState = {
 };
 
 // Global error handler function
-export const handleError = () => {
+const handleError = () => {
   if (globalErrorState.hasError) {
     console.log("An error occurred: " + globalErrorState.message);
     setGamePhase("Error");
@@ -162,7 +202,7 @@ console.log("Game State: ", appState);
 //plays game and follows game phases
 
 //flip the coin
-export const flipCoin = async () => {
+const flipCoin = async () => {
   const randomNumber = await runRandomNumber();
   if (randomNumber === 1) {
     setActualResult("Heads");
@@ -172,53 +212,18 @@ export const flipCoin = async () => {
     return "Tails";
   }
 };
-///////////
-//Blockchain functions
-///////////
-export const runRandomNumber = async () => {
-  try {
-    //Create the transaction with range set
-    const transaction = await new PrngTransaction()
-      //Set the range
-      .setRange(1)
-      .execute(client);
-
-    //Get the record
-    const transactionRecord = await transaction.getRecord(client);
-
-    //Get the number
-    const randomNumber = transactionRecord.prngNumber;
-    // Set the actual result of the coin flip
-
-    //heads = 1, tails = 0
-    return randomNumber;
-  } catch (error) {
-    console.error(error);
-  }
-};
 
 ///////////
 //Contract functions
-///////////
-const contractCreateTx = new ContractCreateTransaction()
-  .setBytecode(bytecode)
-  .setGas(20000)
-  .setNodeAccountIds(["0.0.3"]);
+///////////execute the contract onto the hedera blockchain
 
-const contractCreateFlow = new ContractCreateFlow(contractCreateTx, client);
-const contractId = contractCreateFlow.execute();
-
-export const setBetAmount = async (amount) => {
-  appState.betAmouont = amount;
-};
-
-///////////
+/////////
 //check that the wallets have enough hbar
 ///////////
-export const placeBet = async (_betAmount) => {
+const placeBet = async (_betAmount) => {
   try {
     const playerBalance = await client.accountInfo(playerId);
-    const contractBalance = await client.accountInfo(contractId);
+    const contractBalance = await client.accountInfo(appState.contractIdentity);
 
     if (playerBalance < _betAmount) {
       throw new Error("Insufficient balance to place bet");
@@ -239,25 +244,27 @@ export const placeBet = async (_betAmount) => {
 ///////////
 ///Transfer funds to the player or the contract based on the outcome of the game
 ///////////
-export const payOut = async () => {
+const payOut = async () => {
   let playerTransfer = 0;
   let contractTransfer = 0;
   let accessToken;
+  const cid = await contractIdentity();
   if (appState.gameWonByPlayer) {
+    accessToken = await getWalletToken();
     //player won so deduct from contract
     playerTransfer = appState.betAmount;
     contractTransfer = -appState.betAmount;
-    accessToken = await getWalletToken();
   } else {
+    accessToken = await getWalletToken();
     //player lost so deduct from player
     playerTransfer = -appState.betAmount;
     contractTransfer = appState.betAmount;
-    accessToken = await getWalletToken(); //access token is equal to contract
+    //access token is equal to contract
   } //key to allow contract to transfer
   //funds to player
   const transferTx = await new TransferTransaction()
-    .addHbarTransfer(playerAcc, Hbar.fromTinybars(playerTransfer))
-    .addHbarTransfer(contractId, Hbar.fromTinybars(contractTransfer))
+    .addHbarTransfer(playerId, playerTransfer)
+    .addHbarTransfer(cid, contractTransfer)
     .setAccessToken(accessToken)
     .execute(client);
   const transferReceipt = await transferTx.getReceipt(client);
@@ -271,7 +278,7 @@ export const payOut = async () => {
 
 const recordUserData = async () => {
   const recordTx = await new ContractExecuteTransaction()
-    .setContractId(contractId)
+    .setContractId(appState.contractIdentity)
     .setGas(20000)
     .setFunction("recordUserData")
     .setFunctionParameters({
@@ -286,7 +293,37 @@ const recordUserData = async () => {
   console.log("Record receipt: ", recordReceipt);
 };
 
-module.export = {
+//solidity functions that create the contract and executue the contract from solidity code in ./coinflip.sol
+
+// const playGameSolidity = async () => {
+//   //create the contract
+//   const contractCreateTx = new ContractCreateTransaction()
+//     .setBytecode(byteString)
+//     .setGas(20000)
+//     .setNodeAccountIds(["0.0.3"]);
+
+//   const contractCreateFlow = new ContractCreateFlow(contractCreateTx, client);
+//   const contractId = contractCreateFlow.execute();
+
+//   //execute a function from the contract
+//   const contractExecuteTx = new ContractExecuteTransaction()
+//     .setContractId(contractId)
+//     .setGas(20000)
+//     .setFunction("startGame")
+//     .setFunctionParameters({
+//       playerGuess: appState.playerGuess,
+//       betAmount: appState.betAmount,
+//     })
+//     .execute(client);
+//   const contractExecuteReceipt = await contractExecuteTx.getReceipt(client);
+//   console.log("Contract execute receipt: ", contractExecuteReceipt);
+// };
+
+//export all functions
+
+module.exports = {
+  recordUserData,
+  setGamePhase,
   flipCoin,
   runRandomNumber,
   placeBet,
@@ -295,5 +332,6 @@ module.export = {
   setPlayerGuess,
   setGameWonByPlayer,
   setActualResult,
-  setGamePhase,
+  setWalletConnected,
+  payOut,
 };

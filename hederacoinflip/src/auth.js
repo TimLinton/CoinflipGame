@@ -10,6 +10,20 @@ let appMetadata = {
   icon: "",
 };
 
+// Add a new state variable to track the game state
+let gameState = {
+  phase: "Started",
+  playerChoice: "",
+  betAmount: 0,
+  gameResult: "",
+  walletConnected: false,
+  walletToken: "",
+  playerId: "",
+  transferReceipt: "",
+  gameWonByPlayer: false,
+  actualResult: "",
+};
+
 export const pairHashpack = async () => {
   let initData = await hashconnect.init(appMetadata, "testnet", false);
 
@@ -25,6 +39,9 @@ export const pairHashpack = async () => {
     console.log(accountId);
     accountId.innerHTML = pairingData.accountIds[0];
     console.log(accountId.innerHTML);
+    gameState.walletConnected = true;
+    gameState.walletAccessToken = pairingData.token;
+    gameState.playerId = pairingData.accountIds[0];
     authenticateUser();
   });
   return initData;
@@ -32,7 +49,7 @@ export const pairHashpack = async () => {
 
 export const authenticateUser = async () => {
   const payload = {
-    url: "localhost",
+    url: window.location.hostname,
     data: {
       token: "fufhr9e84hf9w8fehw9e8fhwo9e8fw938fw3o98fhjw3of",
     },
@@ -72,17 +89,11 @@ export const authenticateUser = async () => {
   const { authMessage } = await res2.json();
 
   console.log(authMessage);
+  gameState.phase = "Authenticated";
+  console.log(gameState.phase);
 };
 
-// This code is used to transfer HBAR from the user's account to the topic's account.
-
-// export const transferHbar = async (_playerAddr, _hbarWon) => {
-//   const transfer = hashconnect.transfer(
-//     JSON.parse(window.localStorage.hashconnectData).topic,
-//     _playerAddr,
-//     _hbarWon
-//   );
-// };
+// Update the game state to reflect that the user has been authenticated
 
 export const disconnectWallet = async () => {
   const disconnect = hashconnect.disconnect(
@@ -91,15 +102,48 @@ export const disconnectWallet = async () => {
 
   await disconnect;
 
-  const accountId = document.getElementById("accountid");
-  accountId.innerHTML = accountId[0];
-
-  if (!accountId[0]) {
-    accountId.innerHTML = "Disconnected Wallet";
-  }
-
-  console.log(accountId);
-  console.log("accountId");
+  // Update the game state to reflect that the wallet has been disconnected
+  gameState.walletConnected = false;
+  gameState.walletAccessToken = "";
+  gameState.playerId = "";
+  gameState.phase = "Disconnected";
 
   console.log("wallet disconnected");
+};
+
+//play the game on the front end
+export const startGame = async (_playerChoice, _betAmount) => {
+  const startGameData = {
+    playerGuess: _playerChoice,
+    betAmount: _betAmount,
+  };
+
+  const res = await fetch("http://localhost:8443/startgame", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(startGameData),
+  });
+
+  const { gameResult } = await res.json();
+
+  console.log(gameResult);
+};
+
+//get encrypted private key from hashconnect wallet association in auth.js so the player can sign the transaction
+export const getHashconnectWalletTokenAndPlayGame = async () => {
+  const hashconnectData = JSON.parse(window.localStorage.hashconnectData);
+  let walletToken = hashconnectData.pairingData[0].token;
+
+  const response = await fetch("/api/playgame", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      walletToken,
+    }),
+  });
 };

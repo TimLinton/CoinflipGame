@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const { sendAuth, receiveAuth } = require("./helpers/authenticate");
+const { sendAuth, receiveAuth } = require("./authenticate");
 const { startGame } = require("./startGame");
 
 const app = express();
@@ -38,4 +38,21 @@ app.post("/startgame", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
+});
+
+app.post("/playgame", async (req, res) => {
+  // Get the wallet token from the request body
+  const { walletToken } = req.body;
+
+  // Perform the authorization check using the receiveAuth function
+  const result = await receiveAuth(walletToken, res);
+
+  // If the authorization check was successful, proceed with the game
+  if (result === "Authentication successful") {
+    //TODO: add run game script
+  } else {
+    // If the authorization check failed, return an error
+    res.status(401).json({ error: "Unauthorized" });
+    res.send(401, { error: "Unauthorized" });
+  }
 });

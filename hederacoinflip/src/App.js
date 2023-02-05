@@ -11,13 +11,19 @@ import Button from "@mui/material/Button";
 // import IconButton from '@mui/material/IconButton';
 // import MenuIcon from '@mui/icons-material/Menu';
 import Paper from "@mui/material/Paper";
-import { pairHashpack, authenticateUser, disconnectWallet } from "./auth";
+import {
+  pairHashpack,
+  authenticateUser,
+  disconnectWallet,
+  startGame,
+  getHashconnectWalletTokenAndPlayGame,
+} from "./auth";
 // import { startGame } from "./startGame";
 
 function App() {
   const [pairingString, setPairingString] = useState("");
   const [betAmount, setBetAmount] = useState(0);
-  const [playerGuess, setPlayerGuess] = useState("");
+  const [playerChoice, setPlayerGuess] = useState("");
   const [result, setResult] = useState("");
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAccessToken, setWalletAccessToken] = useState("");
@@ -26,12 +32,15 @@ function App() {
   const [gameWonByPlayer, setGameWonByPlayer] = useState(false);
   const [actualResult, setActualResult] = useState("");
   const [currentPhase, setCurrentPhase] = useState("Started");
-  const [gamePhase, setGamePhase] = useState(["Started", "Bet Placed", "Coin Flip", "Game Over", "PayoutsProcessed", "Error"]);
-  
+  const [gamePhase, setGamePhase] = useState([
+    "Started",
+    "Bet Placed",
+    "Coin Flip",
+    "Game Over",
+    "PayoutsProcessed",
+    "Error",
+  ]);
 
-  const startGame = async (_playerChoice, _betAmount) => {
-
-  };
   return (
     <Paper elevation={5} className="middlePaper">
       <Box sx={{ flexGrow: 1 }}>
@@ -99,10 +108,10 @@ function App() {
           <br />
           <br />
           <h2>Pick heads or tails</h2>
-          <Button variant="contained" onClick={() => setPlayerGuess("heads")}>
+          <Button variant="contained" onClick={() => setPlayerGuess("Heads")}>
             Heads
           </Button>
-          <Button variant="contained" onClick={() => setPlayerGuess("tails")}>
+          <Button variant="contained" onClick={() => setPlayerGuess("Tails")}>
             Tails
           </Button>
           <h2>Results</h2>
@@ -110,7 +119,7 @@ function App() {
           <br />{" "}
           <Button
             variant="contained"
-            onClick={() => startGame(betAmount, playerGuess).then(setResult)}
+            onClick={() => startGame(playerChoice, betAmount).then(setResult)}
           >
             Start Game
           </Button>
@@ -132,3 +141,5 @@ function App() {
   );
 }
 export default App;
+
+// Make an API call to your backend to send the wallet token

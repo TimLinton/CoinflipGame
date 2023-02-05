@@ -17,7 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
-
+/home/goodchoice/Documents/Website2/hederacoinflip/backend/gameServer/.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

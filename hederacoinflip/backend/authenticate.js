@@ -1,9 +1,21 @@
-const { PrivateKey, PublicKey } = require("@hashgraph/sdk");
+const { AccountId, PrivateKey, PublicKey } = require("@hashgraph/sdk");
 
 require("node-fetch");
+require("dotenv").config();
 
-//operator private key
-const operatorKey = process.env.OPERATOR_KEY;
+const dotenv = require("dotenv");
+
+const result = dotenv.config({
+  path: "/home/goodchoice/Documents/Website2/hederacoinflip/backend/.env",
+});
+
+if (result.error) {
+  throw result.error;
+}
+const operatorAcc = AccountId.fromString(process.env.OPERATOR_ID);
+const operatorKey = PrivateKey.fromString(process.env.OPERATOR_KEY);
+
+console.log(result.parsed);
 
 const sendAuth = () => {
   let payload = {
@@ -18,7 +30,7 @@ const sendAuth = () => {
 
   return {
     serverSignature: signature,
-    serverSigningAccount: process.env.MY_TEST_ACCOUNT_ID,
+    serverSigningAccount: operatorAcc,
   };
 };
 
@@ -60,6 +72,9 @@ const receiveAuth = async (signingAccount, res) => {
     alert("Error getting public Key");
   }
 };
+
+
+
 
 const verifyData = (_data, _publicKey, _signature) => {
   const pubKey = PublicKey.fromString(_publicKey);
