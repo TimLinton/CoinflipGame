@@ -1,0 +1,82 @@
+/* html,
+body,
+#root {
+  height: 100vh;
+} */
+/* *{
+  margin:0px;
+  text-align: center;
+} */
+
+/* .App {
+  text-align: center;
+} */
+/* .App-header{
+  display: "flex";
+  align-items: "center";
+  justify-content: "center";
+  
+} */
+
+.topPaper{
+  height: 80;
+  max-width: 50%;
+  margin-left: 25%;
+}
+
+.topBar{
+  background-color: #1a588a;
+  justify-content: center;
+}
+.topBar.Button{
+  color: #00ff40;
+}
+.topBar.Button:hover{
+  color: #00ff40;
+}
+
+.middlePaper{
+  height: 90%;
+  max-width: 50%;
+  margin-left: 25%;
+}
+
+.middleBarText{
+  background-color: #4666ac;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  overflow: scroll;
+}
+
+.pairString {
+  background-color: #4666ac;
+  color: #ffffff;
+  font-size: 20px;
+  text-align: center;
+  overflow: scroll;
+  overflow-wrap: break-word;
+
+}
+
+.popup {
+  display: inline-block;
+}
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #b1b1b1;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 20px;
+  position:relative;
+  top:50px;
+  right:150px;
+}
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}

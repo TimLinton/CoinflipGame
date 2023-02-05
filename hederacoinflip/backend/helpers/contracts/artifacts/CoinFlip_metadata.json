@@ -1,0 +1,277 @@
+{
+	"compiler": {
+		"version": "0.8.6+commit.11564f7e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "delegateTransferFrom",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "serialNumber",
+						"type": "uint256"
+					}
+				],
+				"name": "delegateTransferFromNFT",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "serialNumber",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFromNFT",
+				"outputs": [
+					{
+						"internalType": "int64",
+						"name": "responseCode",
+						"type": "int64"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"delegateTransferFrom(address,address,address,uint256)": {
+					"params": {
+						"amount": "The amount of tokens to transfer from `from` to `to`",
+						"from": "The account address of the owner of the token, on the behalf of which to transfer `amount` tokens",
+						"to": "The account address of the receiver of the `amount` tokens",
+						"token": "The address of the fungible Hedera token to transfer"
+					},
+					"returns": {
+						"responseCode": "The response code for the status of the request. SUCCESS is 22."
+					}
+				},
+				"delegateTransferFromNFT(address,address,address,uint256)": {
+					"params": {
+						"from": "The account address of the owner of `serialNumber` of `token`",
+						"serialNumber": "The NFT serial number to transfer",
+						"to": "The account address of the receiver of `serialNumber`",
+						"token": "The address of the non-fungible Hedera token to transfer"
+					},
+					"returns": {
+						"responseCode": "The response code for the status of the request. SUCCESS is 22."
+					}
+				},
+				"transferFrom(address,address,address,uint256)": {
+					"params": {
+						"amount": "The amount of tokens to transfer from `from` to `to`",
+						"from": "The account address of the owner of the token, on the behalf of which to transfer `amount` tokens",
+						"to": "The account address of the receiver of the `amount` tokens",
+						"token": "The address of the fungible Hedera token to transfer"
+					},
+					"returns": {
+						"responseCode": "The response code for the status of the request. SUCCESS is 22."
+					}
+				},
+				"transferFromNFT(address,address,address,uint256)": {
+					"params": {
+						"from": "The account address of the owner of `serialNumber` of `token`",
+						"serialNumber": "The NFT serial number to transfer",
+						"to": "The account address of the receiver of `serialNumber`",
+						"token": "The address of the non-fungible Hedera token to transfer"
+					},
+					"returns": {
+						"responseCode": "The response code for the status of the request. SUCCESS is 22."
+					}
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"delegateTransferFrom(address,address,address,uint256)": {
+					"notice": "Only applicable to fungible tokens"
+				},
+				"delegateTransferFromNFT(address,address,address,uint256)": {
+					"notice": "Transfers `serialNumber` of `token` from `from` to `to` using the allowance mechanism. Only applicable to NFT tokens"
+				},
+				"transferFrom(address,address,address,uint256)": {
+					"notice": "Only applicable to fungible tokens"
+				},
+				"transferFromNFT(address,address,address,uint256)": {
+					"notice": "Transfers `serialNumber` of `token` from `from` to `to` using the allowance mechanism. Only applicable to NFT tokens"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"backend/helpers/contracts/Untitled-1.sol": "CoinFlip"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"backend/helpers/contracts/ExpiryHelper.sol": {
+			"keccak256": "0x905bce7992ce599e2cfc105f2b2f11b1038ee452b9e484a7be6605f45af9f94a",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://d395ab56d092b83ee0482b5f46cbc9c2b16077a0a5b5490815801be0c232c67a",
+				"dweb:/ipfs/QmRD8b5M9x8AmpxCtbEqoR8PhTB1mUqXWBvRbimQ5M9czF"
+			]
+		},
+		"backend/helpers/contracts/HederaResponseCodes.sol": {
+			"keccak256": "0x85734572347c25f45480488ad4fdb63ed749a794daac839540f5b0eb7dbb22e6",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://addc4c8c31e1b3fd001986599856bb39e9cb4532a922155f699aae1686563e63",
+				"dweb:/ipfs/QmXJES7o4xoSowiDo3qm3Mr3LaWm7g5qTQosw5EAAiz9R5"
+			]
+		},
+		"backend/helpers/contracts/HederaTokenService.sol": {
+			"keccak256": "0xfd694ae4772a8cd850beed2bb2f9085c886547418c6ddf5efc62f6a402262b87",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://119935f91b9333b431ecd937b72980adcf5cd90fef7b2c9eb485b0d3b4b5e956",
+				"dweb:/ipfs/QmaEAfLBGdZAo8MoTaPDvXDthcCRSpBZRoAk19bmV4SM83"
+			]
+		},
+		"backend/helpers/contracts/IHederaTokenService.sol": {
+			"keccak256": "0xfdb882a4883cca98de0904d3a74405c210c891d7dab3666f635b3917988781e2",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://bcdb3f8e6c966d249922e69246fe93dcbc9a89f858f747f3814a696aa3ca2e55",
+				"dweb:/ipfs/QmYMYDS8cawToJBzjepLN7MLmoL49rxrhJTmiWMRKEQTYZ"
+			]
+		},
+		"backend/helpers/contracts/Untitled-1.sol": {
+			"keccak256": "0xfe481cc7944b4fa2fe32d9a9fec83d42ae6321376706c7f3c12eac9d1b0ed89a",
+			"license": "Apache-2.0",
+			"urls": [
+				"bzz-raw://d749130b2b7e8de10f7ffc8a5f1867ac9601e16440a4f7568fd523dc5775601b",
+				"dweb:/ipfs/QmcVQ5upHaJHFNJuaYP88XQJxDUkUE3WqnyujSVj3pgWC8"
+			]
+		}
+	},
+	"version": 1
+}
