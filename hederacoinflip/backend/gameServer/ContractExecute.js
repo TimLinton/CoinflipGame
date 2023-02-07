@@ -174,6 +174,9 @@ if (
   if (!(await playerStatsContractId)) {
     console.log("Player Stats contract failed to deploy");
   }
+  if (!(await nftCreatorContractId)) {
+    console.log("NFT Creator contract failed to deploy");
+  }
 }
 
 async function getBalance() {
