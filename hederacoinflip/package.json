@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@hashgraph/sdk": "^2.19.1",
+    "@hashgraph/sdk": "^2.60.1",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
     "@testing-library/jest-dom": "^5.16.5",
